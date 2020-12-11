@@ -39,7 +39,7 @@
   <div class="Home-footer" width="100%">
   <div class="footer-text">
     <div class="GitHub">
-      <a class="footer-link" href="https://github.com/BYU-CS-260-Winter-2020/lab-1-photography-website-JinxinYu-BYU"> <img src="./assets/images/github.svg" alt="facebook icon" width="25px"></a>
+      <a class="footer-link" href="https://github.com/JinxinYu-BYU/caltracker.git"> <img src="./assets/images/github.svg" alt="facebook icon" width="25px"></a>
     </div>
     <div class="Facebook">
       <a class="footer-link" href="https://facebook.com"> <img src="./assets/images/facebook.svg" alt="facebook icon" width="25px"></a>
