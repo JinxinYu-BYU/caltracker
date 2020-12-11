@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div v-if="empty()">
-      <h1>Your Cart is Empty</h1>
+      <h1>Your Favorite Food List is Empty</h1>
     </div>
     <div v-else>
       <h1>Your Favorite Foods list:</h1>
@@ -161,9 +161,9 @@ button {
   color: white;
   border: none;
 }
-
+*/
 
 .auto {
   margin-left: auto;
-} */
+}
 </style>
