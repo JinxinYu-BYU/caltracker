@@ -12,8 +12,8 @@
             <p>Calories:&nbsp; {{product.calories}}</p>
           </b-card-text>
           <b-button @click="deleteFoodCart(product)" variant="info" class="auto">Remove</b-button>
-          <b-button @click="addToCart" class="auto" variant="info">Add to Cart</b-button>
-          <b-button @click="addToTrack" class="auto" variant="info">Add to Track</b-button>
+          <b-button @click="addToCart(product)" class="auto" variant="info">Add to Cart</b-button>
+          <b-button @click="addToTrack(product)" class="auto" variant="info">Add to Track</b-button>
         </b-card>
       </b-card-group>
     </div>
@@ -33,11 +33,11 @@ export default {
     }
   },
   methods: {
-    async addToCart() {
+    async addToCart(product) {
       try {
         await axios.post("/api/foodcart", {
-          name: this.product.name,
-          calories: this.product.calories,
+          name: product.name,
+          calories: product.calories,
           date: moment().format('lll'),
         });
         return true;
@@ -46,11 +46,11 @@ export default {
       }
 
     },
-    async addToTrack() {
+    async addToTrack(product) {
       try {
         await axios.post("/api/food", {
-          name: this.product.name,
-          calories: this.product.calories,
+          name: product.name,
+          calories: product.calories,
           date: moment().format('lll')
         });
         return true;

@@ -10,8 +10,8 @@
         </div>
 
         <div class="links w-30">
-          <router-link to="/cart" class="nav-link" id = "Home">Cart </router-link>
-          <router-link to="/favfood" class="nav-link" id = "Home">Favorite Foods </router-link>
+          <router-link to="/cart" class="nav-link" id="Home">Cart </router-link>
+          <router-link to="/favfood" class="nav-link" id="Home">Favorite Foods </router-link>
         </div>
       </div>
 
@@ -61,8 +61,8 @@ export default {
     ProductList,
     FavFoodGroup
   },
-  data(){
-    return{
+  data() {
+    return {
       searchText: '',
       // searchCalories: Number,
     }
@@ -75,76 +75,80 @@ export default {
       console.log("In Fetch " + this.searchText);
       var url = "https://trackapi.nutritionix.com/v2/search/instant?query=" + this.searchText;
       console.log("URL " + url);
-      var headers =     {headers: {
+      var headers = {
+        headers: {
           'x-app-id': 'ebd9bbbe',
-          'x-app-key': '6df509dbfc2725cbbd1df4cab6c4b4bb'}};
-    fetch(url, headers)
-    .then((response) =>{
-      return response.json();
-    })
-    .then((data) => {
-      console.log("FoodList data");
-      console.log(data);
-      this.$root.$data.brandedFoodList = [];
-       for (let i = 0; i < data.common.length; i++) {
-         // console.log(data.common[i].food_name);
-         data.common[i].uniqueID = i;
-         tempCommonFoodList.push(data.common[i]);
-       }
-       for (let i = 0; i < data.branded.length; i++) {
-         // console.log(data.branded[i].food_name);
-         data.common[i].uniqueID = 50+i;
-         this.$root.$data.brandedFoodList.push(data.branded[i]);
-       }
+          'x-app-key': '6df509dbfc2725cbbd1df4cab6c4b4bb'
+        }
+      };
+      fetch(url, headers)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("FoodList data");
+          console.log(data);
+          this.$root.$data.brandedFoodList = [];
+          for (let i = 0; i < data.common.length; i++) {
+            data.common[i].uniqueID = i;
+            tempCommonFoodList.push(data.common[i]);
+          }
 
+          let commonFoodNameList = '';
+          for (var item of tempCommonFoodList) {
+            commonFoodNameList += item.food_name;
+            commonFoodNameList += ", ";
+          }
 
-           let commonFoodNameList = '';
-           for(var item of tempCommonFoodList){
-             commonFoodNameList += item.food_name;
-             commonFoodNameList += ", ";
-           }
-
-           console.log("In Fetch " + commonFoodNameList);
+          console.log("In Fetch " + commonFoodNameList);
           url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
-           // console.log("URL " + url);
 
-         fetch(url, {
-           headers: {
-             'Content-Type':'application/json',
-             'x-app-id': 'ebd9bbbe',
-             'x-app-key': '6df509dbfc2725cbbd1df4cab6c4b4bb',
-           'x-remote-user-id':'0'},
-           body:JSON.stringify({query:commonFoodNameList}),
-           method: 'POST'
-         })
-         .then((response) =>{
-           console.log(response);
-           return response.json();
-         })
-         .then((data) => {
-           console.log("commonList data");
-           console.log(data);
-           this.$root.$data.commonFoodList = [];
-            for (let i = 0; i < data.foods.length; i++) {
-              data.foods[i].uniqueID = i;
-              this.$root.$data.commonFoodList.push(data.foods[i]);
-            }
-         });
-    });
+          fetch(url, {
+              headers: {
+                'Content-Type': 'application/json',
+                'x-app-id': 'ebd9bbbe',
+                'x-app-key': '71fe313f79a47d83cfe07e3747570666',
+                'x-remote-user-id': '0'
+              },
+              body: JSON.stringify({
+                query: commonFoodNameList
+              }),
+              method: 'POST'
+            })
+            .then((response) => {
+              console.log(response);
+              return response.json();
+            })
+            .then((data) => {
+              console.log("commonList data");
+              console.log(data);
+              this.$root.$data.commonFoodList = [];
+              for (let i = 0; i < data.foods.length; i++) {
+                data.foods[i].uniqueID = i;
+                this.$root.$data.commonFoodList.push(data.foods[i]);
+              }
+            });
+
+          for (let i = 0; i < data.branded.length; i++) {
+            // console.log(data.branded[i].food_name);
+            data.common[i].uniqueID = 50 + i;
+            this.$root.$data.brandedFoodList.push(data.branded[i]);
+          }
+        });
+
+    },
+
 
   },
+  computed: {
+    commonProducts() {
+      return this.$root.$data.commonFoodList;
+    },
+    brandedProducts() {
+      return this.$root.$data.brandedFoodList;
+    },
 
-
-},
-computed:{
-  commonProducts(){
-    return this.$root.$data.commonFoodList;
-  },
-  brandedProducts(){
-    return this.$root.$data.brandedFoodList;
-  },
-
-}
+  }
 
 }
 </script>

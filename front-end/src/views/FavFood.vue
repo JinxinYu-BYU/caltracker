@@ -1,17 +1,19 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper container-fluid">
     <div v-if="empty()">
       <h1>Your Cart is Empty</h1>
     </div>
-    <div v-else>
-      <h1>Your Food Cart:</h1>
-      <div class="products">
+    <div v-else class="w-70">
+      <h1>Your Favorite Food List:</h1>
+      <div class="products" >
         <ul>
           <li class="product" v-for="product in items" :key="product.id">
             <p>{{product.name}}&nbsp; &nbsp; </p>
             <p>Calories:&nbsp; {{product.calories}}</p>
             <p>Date: {{product.date}}</p>
-            <button @click="deleteFoodCart(product)" class="auto">Remove</button>
+            <b-button @click="deleteFoodCart(product)" class="auto" >Remove</b-button>
+            <b-button @click="addToCart(product)" class="auto" >Add to Cart</b-button>
+            <b-button @click="addToTrack(product)" class="auto" >Add to Track</b-button>
           </li>
         </ul>
         <h2>Total Calories: {{getTotal}}</h2>
@@ -23,6 +25,7 @@
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
 // import CartList from "../components/CartList.vue"
 export default {
   name: 'FavFood',
@@ -41,6 +44,32 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async addToCart(product) {
+      try {
+        await axios.post("/api/foodcart", {
+          name: product.name,
+          calories: product.calories,
+          date: moment().format('lll'),
+        });
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+
+    },
+    async addToTrack(product) {
+      try {
+        await axios.post("/api/food", {
+          name: product.name,
+          calories: product.calories,
+          date: moment().format('lll')
+        });
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+
     },
     empty(){
       return (this.items.length===0);
@@ -146,5 +175,6 @@ button {
 
 .auto {
   margin-left: auto;
+  padding-left: 20px;
 }
 </style>

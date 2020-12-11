@@ -52,6 +52,7 @@ export default {
   try {
     await axios.post("/api/foodcart/checkout", {
     });
+    this.getItems();
     return true;
   } catch (error) {
     console.log(error);

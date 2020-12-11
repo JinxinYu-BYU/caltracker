@@ -42,13 +42,6 @@ const Food = mongoose.model('Food', foodSchema);
 const FavFoodList = mongoose.model('FavFoodList', foodSchema);
 const FoodCart = mongoose.model('FoodCart', foodSchema);
 
-async function work() {
-  console.log('meow');
-  let kitties = await Food.find();
-  console.log(kitties);
-}
-
-work();
 
 app.get('/api/food', async (req, res) => {
   try {
@@ -122,7 +115,13 @@ app.post('/api/foodcart/checkout', async (req, res) => {
   try {
     let foods = await FoodCart.find();
     for(food of foods){
-      await food.save();
+      const item = new Food({
+        name: food.name,
+        calories: food.calories,
+        date: food.date,
+      })
+      await item.save();
+      await FoodCart.deleteMany();
     }
   } catch (error) {
     console.log(error);
